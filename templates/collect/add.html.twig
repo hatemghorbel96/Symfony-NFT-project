@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PostController!{% endblock %}
+
+{% block body %}
+<br><br><br><br>
+ <main class="page-wrapper">
+    
+      <!-- Page title-->
+      <div class="bg-accent mb-4 py-4">
+        <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+          <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+                <li class="breadcrumb-item"><a class="text-nowrap" href="index.html"><i class="ci-home"></i>Home</a></li>
+                <li class="breadcrumb-item text-nowrap"><a href="home-nft.html">NFT Marketplace</a>
+                </li>
+                <li class="breadcrumb-item text-nowrap active" aria-current="page">Create New Collect</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+            <h1 class="h3 text-light mb-0">Create New Collect</h1>
+          </div>
+        </div>
+      </div>
+    
+      <section class="container mb-5 pt-3 pb-md-5 pb-1">
+        <div class="row gy-5">
+          <div class="needs-validation col-md-8" novalidate="">
+            <!-- Upload file-->
+           
+            <!-- Details-->
+            <div class="mb-md-5 mb-4 pb-md-0 pb-2">
+              <h2 class="h5 mb-3">Details</h2>
+              <div class="row gy-md-4 gy-3">
+                <div class="col-12">
+                 {{form_start(form)}}
+                  <label class="form-label" for="details-title">Title<span class="ms-1 text-danger">*</span></label>
+                 {{form_widget(form.name)}}
+                  <div class="invalid-feedback">Please, enter the title.</div><span class="form-text">Maximum 100 characters. No HTML or emoji allowed.</span>
+                </div>
+             
+              </div>
+            </div>
+            <!-- Price & payment options-->
+            <div>
+             
+           
+              <!-- Submit-->
+              <div class="pt-2">
+                <button class="btn btn-lg btn-accent d-block w-100" type="submit">Create collection</button>
+                  {{form_end(form)}}
+              </div>
+            </div>
+          </div>
+        
+          <!-- Preview-->
+          <aside class="col-lg-3 offset-lg-1 col-md-4 position-relative">
+            <div class="sticky-top" style="top: 100px;">
+              <h4 class="h5 mb-3 text-md-start text-center">My collections</h4>
+              <!-- Preview item-->
+             <table class="table">
+             
+             <th></th>
+             <th></th>
+             
+             {% for c in collects %}
+             <tr>
+                   
+                    <td><span class="badge rounded-pill bg-light">
+                    {{c.name}}
+                    </span></td>
+             
+             </tr>
+             {% endfor %}
+             
+             </table>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+{% endblock %}

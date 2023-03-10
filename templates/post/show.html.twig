@@ -1,0 +1,360 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PostController!{% endblock %}
+
+{% block body %}
+<br><br><br><br>
+    <link rel="stylesheet" media="screen" href="{{asset('vendor/simplebar/dist/simplebar.min.css')}}"/>
+            <link rel="stylesheet" media="screen" href="{{asset('vendor/tiny-slider/dist/tiny-slider.css')}}"/>
+            <!-- Main Theme Styles + Bootstrap-->
+            <link rel="stylesheet" media="screen" href="{{asset('css/theme.min.css')}}">
+   <div class="page-title-overlap bg-accent pt-4">
+        <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+          <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+                <li class="breadcrumb-item"><a class="text-nowrap" href="index.html"><i class="ci-home"></i>Home</a></li>
+                <li class="breadcrumb-item text-nowrap"><a href="home-nft.html">Marketplace</a>
+                </li>
+                <li class="breadcrumb-item text-nowrap active" aria-current="page">Single Project</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+            <h1 class="h3 text-light mb-0">Single Item - Buy Now</h1>
+          </div>
+        </div>
+      </div>
+      <section class="container pb-md-4">
+      {% for label,messages in app.flashes %}
+                                    <div class="container mb-3 text-center">
+                                        <div class="alert alert-{{ label }} rounded mb-3" style="color:green;">
+                                            {% for message in messages %}
+                                                <p>{{ message }}</p>
+                                            {% endfor %}
+                                        </div>
+
+                                    </div>
+                                {% endfor %}
+        <!-- Product-->
+        <div class="bg-light shadow-lg rounded-3 px-4 py-lg-4 py-3 mb-5">
+          <div class="py-lg-3 py-2 px-lg-3">
+            <div class="row gy-4">
+              <!-- Product image-->
+              <div class="col-lg-6">
+                <div class="position-relative rounded-3 overflow-hidden mb-lg-4 mb-2"><img class="image-zoom" src="/uploads/{{post.img}}" data-zoom="/uploads/{{post.img}}" alt="Product image" style="min-width:600px;">
+                  <div class="image-zoom-pane"></div>
+                </div>
+                <div class="pt-2 text-lg-start text-center">
+                  <button class="btn btn-secondary rounded-pill btn-icon me-sm-3 me-2" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Favorites"><i class="ci-heart"></i></button>
+                
+                </div>
+              </div>
+              <!-- Product details-->
+              <div class="col-lg-6">
+                <div class="ps-xl-5 ps-lg-3">
+                  <!-- Meta-->
+                  <h2 class="h3 mb-3">{{post.title}}</h2>
+                  <div class="d-flex align-items-center flex-wrap text-nowrap mb-sm-4 mb-3 fs-sm">
+                    <div class="mb-2 me-sm-3 me-2 text-muted">created at {{post.datedeb | date ('d/m/Y', false)}}</div>
+                    <div class="mb-2 me-sm-3 me-2 ps-sm-3 ps-2 border-start text-muted"><i class="ci-eye me-1 fs-base mt-n1 align-middle"></i>{{post.view}} views</div>
+                    <div class="mb-2 me-sm-3 me-2 ps-sm-3 ps-2 border-start text-muted"><i class="ci-heart me-1 fs-base mt-n1 align-middle"></i>{{post.likes | length}} favorite</div>
+                  </div>
+                  <div class="row row-cols-sm-2 row-cols-1 gy-3 gx-4 mb-4 pb-md-2">
+                    <!-- Creator-->
+                    <div class="col">
+                      <div class="card position-relative h-100">
+                        <div class="card-body p-3">
+                          <h3 class="h6 mb-2 fs-sm text-muted">Creator</h3>
+                          <div class="d-flex align-items-center"><img class="rounded-circle me-2" src="/uploads/{{post.user.image}}" width="32" alt="Avatar">
+                          <a class="nav-link-style stretched-link fs-sm" href="{{path('show_user',{'id':post.user.id})}}">@{{post.user.name}}_{{post.user.lastname}}</a></div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Collection-->
+                    <div class="col">
+                      <div class="card position-relative h-100">
+                        <div class="card-body p-3">
+                          <h3 class="h6 mb-2 fs-sm text-muted">Collection</h3>
+                          <div class="d-flex align-items-center">
+                          <a class="nav-link-style stretched-link fs-sm" href="nft-catalog-v2.html">{{post.collect.name}}</a></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Description-->
+                  <p class="mb-4 pb-md-2 fs-sm">{{post.description}}</p>
+                  <!-- Current price-->
+               {#  {{post.datefin | date ("m/d/Y H:i:s","Europe/Rome")}} <br>
+                {{post.datefin | date ("H:i:s","Europe/Rome")}} <br>
+
+                    {{"now -1 hour"|date("m/d/Y H:i:s", "Europe/Rome")}} #}
+                      {% if winer %} {# objet fi hisotry #}
+                     {% if ("now -1 hour"|date("m/d/Y H:i:s", "Europe/Rome")) == (post.datefin | date("m/d/Y H:i:s", "Europe/Rome")) or ("now -1 hour"|date("m/d/Y H:i:s", "Europe/Rome")) > (post.datefin | date("m/d/Y H:i:s", "Europe/Rome")) %} 
+                     {% if post.owner == winer  %} 
+                       {% else %} 
+                       {{ render(controller('App\\Controller\\PostController::endbet',{'id': post.id})) }}	  
+                     {% endif %}  {% endif %}  {% endif %} 
+                   
+                  {% if post.minbet %}
+                     {% if post.owner %}
+                      <div class="row row-cols-sm-2 row-cols-1 gy-3 mb-4 pb-md-2">
+                    <div class="col">
+                      <h3 class="h6 mb-2 fs-sm text-muted">Sold for</h3>
+                      <h2 class="h3 mb-1">{{post.minbet / 100}} {{post.currencyv}}</h2><span class="fs-sm text-muted">(≈ $ {{post.minbet * 1155.60}})</span>
+                    </div>
+                    <div class="col">
+                    {% else %}
+                  <div class="row row-cols-sm-2 row-cols-1 gy-3 mb-4 pb-md-2">
+                    <div class="col">
+                      <h3 class="h6 mb-2 fs-sm text-muted">Current bid</h3>
+                      <h2 class="h3 mb-1">{{post.minbet / 100}} {{post.currencyv}}</h2><span class="fs-sm text-muted">(≈ $ {{post.minbet * 1155.60}})</span>
+                    </div>
+                    <div class="col">
+                    {% endif %}
+                    {% if post.owner %}
+
+                     <h3 class="h6 mb-2 pb-1 fs-sm text-muted">Auction won by</h3>
+                      <div class="d-flex align-items-center position-relative"><img class="rounded-circle me-2" src="/uploads/{{post.owner.image}}" width="32" alt="Avatar">
+                        <div><a class="nav-link-style d-block fs-sm stretched-link" href="{{path('show_user',{'id':post.owner.id})}}">@{{post.owner.name}}{{post.owner.lastname}}</a><span class="fs-sm text-muted">{{post.dateown | date('d/m/Y')}}</span></div>
+                      </div>
+                    </div>
+                  </div>
+                    {% else %}
+                      <h3 class="h6 mb-2 pb-1 fs-sm text-muted">bet end in</h3>
+                      <div class="countdown h6 mb-0" data-countdown="{{post.datefin | date ("m/d/Y H:i:s","Europe/Rome") }}"  {# data-countdown="12/31/2022 12:00:00 PM" #}>
+                        <div class="countdown-days bg-dark text-light rounded p-2"><span class="countdown-value">0</span></div>
+                        <div class="countdown-hours bg-dark text-light rounded p-2"><span class="countdown-value">0</span></div>
+                        <div class="countdown-minutes bg-dark text-light rounded p-2"><span class="countdown-value">0</span></div>
+                        <div class="countdown-seconds bg-dark text-light rounded p-2"><span class="countdown-value">0</span></div>
+                      </div>
+                    </div>
+                  </div>
+                    {% endif %}
+
+                  
+                  {% else %}
+                 
+                    
+                     <div class="row row-cols-sm-2 row-cols-1 gy-3 mb-4 pb-md-2">
+                    <div class="col">
+                      <h3 class="h6 mb-2 fs-sm text-muted">Current price</h3>
+                      <h2 class="h3 mb-1">{{post.price / 100}} {{post.currency}}</h2><span class="fs-sm text-muted">(≈ $ {{post.price * 1155.60}})</span>
+                    </div>
+                    {% if post.owner %}
+                   
+                    {% else %} </div>
+                     {% endif %}
+
+                    {% if post.owner %}
+                    <div class="col">
+                      <h3 class="h6 mb-2 pb-1 fs-sm text-muted">item bought by</h3>
+                      <div class="d-flex align-items-center position-relative"><img class="rounded-circle me-2" src="/uploads/{{post.owner.image}}" width="32" alt="Avatar">
+                        <div><a class="nav-link-style d-block fs-sm stretched-link" href="{{path('show_user',{'id':post.owner.id})}}">@{{post.owner.name}}{{post.owner.lastname}}</a><span class="fs-sm text-muted">{{post.dateown | date('d/m/Y')}}</span></div>
+                      </div>
+                    </div>
+                  </div>
+                      {% endif %}
+                  {% endif %}
+                  <!-- Buy-->
+                  <div class="row ">
+                  {% if post.minbet == null %}
+                    {% if post.owner %}
+                  <a class="btn btn-lg btn-danger disabled d-block w-100 mb-4 disabled" href="{{path('buy_post',{'id':post.id})}}">item selled</a>
+                  {% else %}
+                    
+                     <a class="btn btn-lg btn-accent d-block w-100" href="{{path('buy_post',{'id':post.id})}}">buy now</a>
+                    {% endif %}
+                   {% else %}
+                   {% if post.owner %}
+                    <button class="btn btn-lg btn-accent d-block w-100 mb-4 mt-4 disabled" type="submit">Auction ended</button>
+                   {% else %}
+                 {{form_start(form)}}
+                {{form_widget(form.devis)}} <div class="alert alert-danger mt-4"> 1 = 0.01 {{post.currencyv}}</div>
+                 {% if post.minbet %}
+                    {% if post.owner %}
+                  <button class="btn btn-lg btn-accent d-block w-100 mb-4 mt-4" type="submit">Auction ended</button>
+                    {% else %}
+                  <button class="btn btn-lg btn-accent d-block w-100 mb-4 mt-4" type="submit">place a bid</button>
+                      {% endif %}
+                     
+                      
+                  {{form_end(form)}}
+                {% endif %} {% endif %}   {% endif %}
+            
+                    
+                   
+                
+                  </div>
+                  <!-- Product info-->
+                  <div class="pt-3">
+                    <!-- Nav tabs-->
+                     <div class="mb-4" style="overflow-x: auto;">
+                      <ul class="nav nav-tabs nav-fill flex-nowrap text-nowrap mb-1" role="tablist">
+                        <li class="nav-item"><a class="nav-link active" href="#details" data-bs-toggle="tab" role="tab">Details</a></li>
+                      
+                        <li class="nav-item"><a class="nav-link" href="#bids" data-bs-toggle="tab" role="tab">Bid History</a></li>
+                       
+                      </ul>
+                    </div> 
+                  
+                     <div class="tab-content">
+                      <!-- Details-->
+                      <div class="tab-pane fade show active" id="details" role="tabpanel">
+                        <ul class="list-unstyled mb-0">
+                          <li class="d-flex flex-sm-row flex-column align-items-sm-center justify-content-between mb-2 fs-sm"><span>Contract Address</span>
+                            <div><a class="text-decoration-none" href="#"><span class="fw-medium text-body">0x1dDB2C08s97...9Ec</span><i class="ci-external-link ms-3 text-accent"></i></a></div>
+                          </li>
+                          <li class="d-flex flex-sm-row flex-column align-items-sm-center justify-content-between mb-2 fs-sm"><span>Token ID</span>
+                            <div><a class="text-decoration-none" href="#"><span class="text-body">8508550793340827...</span><i class="ci-copy ms-3 text-accent"></i></a></div>
+                          </li>
+                          <li class="d-flex flex-sm-row flex-column align-items-sm-center justify-content-between mb-2 fs-sm"><span>Token Standard</span>
+                            <div><span class="text-body">ERC-1155</span></div>
+                          </li>
+                          <li class="d-flex flex-sm-row flex-column align-items-sm-center justify-content-between mb-2 fs-sm"><span>Blockchain</span>
+                            <div><span class="text-body">Ethereum</span></div>
+                          </li>
+                          <li class="d-flex flex-sm-row flex-column align-items-sm-center justify-content-between mb-2 fs-sm"><span>Metadata</span>
+                            <div><span class="text-body">Editable</span></div>
+                          </li>
+                        </ul>
+                      </div>
+                      <!-- Properties-->
+                     
+                      <!-- Bid History-->
+                      <div class="tab-pane fade" id="bids" role="tabpanel">
+                        <ul class="list-unstyled mb-0">
+                        
+                        {% for f in bets |sort((b, a) => a.id <=> b.id) %}
+                          <li class="d-flex align-items-sm-center align-items-start w-100 mb-3 pb-3 border-bottom"><img class="rounded-circle me-2" src="/uploads/{{f.user.image}}" width="32" alt="Avatar">
+                            <div class="d-sm-flex align-items-sm-center w-100">
+                              <div class="mb-sm-0 mb-2">
+                                <h6 class="mb-1 fs-sm"><a href='nft-vendor.html' class='text-decoration-none text-accent'>@{{f.user.name}}{{f.user.lastname}}</a> placed a bid</h6><span class="fs-sm fw-normal text-muted">0 days ago</span>
+                              </div>
+                              <div class="ms-sm-auto text-nowrap">
+                                <h6 class="mb-0 fs-lg fw-medium text-darker">{{f.devis / 100}} ETH</h6> <span class="fs-sm text-muted">(≈ $ {{f.devis * 1155.60}})</span> 
+                              </div>
+                            </div>
+                          </li>
+                        {% endfor %}
+                        </ul>
+                      </div>
+                      <!-- Provenance-->
+                    
+                    </div> 
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+     
+     {#  <section class="container mb-5 pb-md-4">
+        <div class="d-flex flex-sm-row flex-column align-items-sm-center justify-content-sm-between mb-sm-4 mb-3">
+          <h2 class="h3 mb-sm-0">More from this collection</h2><a class="btn btn-outline-accent ms-sm-3" href="nft-catalog-v2.html">View collection<i class="ci-arrow-right ms-2"></i></a>
+        </div>
+        <!-- Product carousel-->
+        <div class="tns-carousel tns-controls-static tns-controls-outside mx-xl-n4 mx-n2 px-xl-4 px-0">
+          <div class="tns-carousel-inner row gx-xl-0 gx-3 mx-0" data-carousel-options="{&quot;items&quot;: 2, &quot;nav&quot;: true, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1,&quot;controls&quot;: false, &quot;gutter&quot;: 0},&quot;500&quot;:{&quot;items&quot;:2},&quot;768&quot;:{&quot;items&quot;:3}, &quot;1100&quot;:{&quot;items&quot;:4}, &quot;1278&quot;:{&quot;controls&quot;: true, &quot;gutter&quot;: 30}}}">
+            <!-- Product item-->
+            <div class="col py-3">
+              <article class="card h-100 border-0 shadow">
+                <div class="card-img-top position-relative overflow-hidden"><a class="d-block" href="nft-single-buy.html"><img src="img/nft/catalog/05.jpg" alt="Product image"></a>
+                  <!-- Wishlist button-->
+                  <button class="btn-wishlist btn-sm position-absolute top-0 end-0" type="button" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Favorites" style="margin: 12px;"><i class="ci-heart"></i></button>
+                </div>
+                <div class="card-body">
+                  <h3 class="product-title mb-2 fs-base"><a class="d-block text-truncate" href="nft-single-buy.html">Aesthetic art collage</a></h3><span class="fs-sm text-muted">Reserve price:</span>
+                  <div class="d-flex align-items-center flex-wrap">
+                    <h4 class="mt-1 mb-0 fs-base text-darker">0.6 ETH</h4><span class="mt-1 ms-1 fs-xs text-muted">(≈ $ 2,400.65)</span>
+                  </div>
+                </div>
+                <div class="card-footer mt-n1 py-0 border-0">
+                  <div class="d-flex align-items-center position-relative mb-1 py-3 border-top"><img class="me-2 rounded-circle" src="img/nft/catalog/avatars/05.png" width="32" alt="Avatar"><a class="nav-link-style fs-sm stretched-link" href="nft-vendor.html">@Sharan_Pagadala</a></div>
+                </div>
+              </article>
+            </div>
+            <!-- Product item-->
+            <div class="col py-3">
+              <article class="card h-100 border-0 shadow">
+                <div class="card-img-top position-relative overflow-hidden"><a class="d-block" href="nft-single-auction-live.html"><img src="img/nft/catalog/06.jpg" alt="Product image"></a>
+                  <!-- Countdown timer-->
+                  <div class="badge bg-dark m-3 fs-sm position-absolute top-0 start-0 zindex-5"><i class="ci-time me-1"></i>
+                    <div class="countdown d-inline" data-countdown="12/31/2022 12:00:00 PM"><span class="countdown-hours mb-0 me-0"><span class="countdown-value">0</span><span class="countdown-label fs-lg">:</span></span><span class="countdown-minutes mb-0 me-0"><span class="countdown-value">0</span><span class="countdown-label fs-lg">:</span></span><span class="countdown-seconds mb-0 me-0"><span class="countdown-value">0</span></span></div>
+                  </div>
+                  <!-- Wishlist button-->
+                  <button class="btn-wishlist btn-sm position-absolute top-0 end-0" type="button" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Favorites" style="margin: 12px;"><i class="ci-heart"></i></button>
+                </div>
+                <div class="card-body">
+                  <h3 class="product-title mb-2 fs-base"><a class="d-block text-truncate" href="nft-single-auction-live.html">Ocean and sky</a></h3><span class="fs-sm text-muted">Current bid:</span>
+                  <div class="d-flex align-items-center flex-wrap">
+                    <h4 class="mt-1 mb-0 fs-base text-darker">0.5 ETH</h4><span class="mt-1 ms-1 fs-xs text-muted">(≈ $ 2,000.55)</span>
+                  </div>
+                </div>
+                <div class="card-footer mt-n1 py-0 border-0">
+                  <div class="d-flex align-items-center position-relative mb-1 py-3 border-top"><img class="me-2 rounded-circle" src="img/nft/catalog/avatars/06.png" width="32" alt="Avatar"><a class="nav-link-style fs-sm stretched-link" href="nft-vendor.html">@Simonlee</a></div>
+                </div>
+              </article>
+            </div>
+            <!-- Product item-->
+            <div class="col py-3">
+              <article class="card h-100 border-0 shadow">
+                <div class="card-img-top position-relative overflow-hidden"><a class="d-block" href="nft-single-auction-live.html"><img src="img/nft/catalog/07.jpg" alt="Product image"></a>
+                  <!-- Countdown timer-->
+                  <div class="badge bg-dark m-3 fs-sm position-absolute top-0 start-0 zindex-5"><i class="ci-time me-1"></i>
+                    <div class="countdown d-inline" data-countdown="12/31/2022 12:00:00 PM"><span class="countdown-hours mb-0 me-0"><span class="countdown-value">0</span><span class="countdown-label fs-lg">:</span></span><span class="countdown-minutes mb-0 me-0"><span class="countdown-value">0</span><span class="countdown-label fs-lg">:</span></span><span class="countdown-seconds mb-0 me-0"><span class="countdown-value">0</span></span></div>
+                  </div>
+                  <!-- Wishlist button-->
+                  <button class="btn-wishlist btn-sm position-absolute top-0 end-0" type="button" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Favorites" style="margin: 12px;"><i class="ci-heart"></i></button>
+                </div>
+                <div class="card-body">
+                  <h3 class="product-title mb-2 fs-base"><a class="d-block text-truncate" href="nft-single-auction-live.html">3d aesthetics with shapes</a></h3><span class="fs-sm text-muted">Current bid:</span>
+                  <div class="d-flex align-items-center flex-wrap">
+                    <h4 class="mt-1 mb-0 fs-base text-darker">0.156 ETH</h4><span class="mt-1 ms-1 fs-xs text-muted">(≈ $ 595.76)</span>
+                  </div>
+                </div>
+                <div class="card-footer mt-n1 py-0 border-0">
+                  <div class="d-flex align-items-center position-relative mb-1 py-3 border-top"><img class="me-2 rounded-circle" src="img/nft/catalog/avatars/07.png" width="32" alt="Avatar"><a class="nav-link-style fs-sm stretched-link" href="nft-vendor.html">@Shubham_Dhage</a></div>
+                </div>
+              </article>
+            </div>
+            <!-- Product item-->
+            <div class="col py-3">
+              <article class="card h-100 border-0 shadow">
+                <div class="card-img-top position-relative overflow-hidden"><a class="d-block" href="nft-single-auction-live.html"><img src="img/nft/catalog/08.jpg" alt="Product image"></a>
+                  <!-- Wishlist button-->
+                  <button class="btn-wishlist btn-sm position-absolute top-0 end-0" type="button" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Favorites" style="margin: 12px;"><i class="ci-heart"></i></button>
+                </div>
+                <div class="card-body">
+                  <h3 class="product-title mb-2 fs-base"><a class="d-block text-truncate" href="nft-single-auction-live.html">Astronaut surrounded by lights</a></h3><span class="fs-sm text-muted">Reserve price:</span>
+                  <div class="d-flex align-items-center flex-wrap">
+                    <h4 class="mt-1 mb-0 fs-base text-darker">0.1 ETH</h4><span class="mt-1 ms-1 fs-xs text-muted">(≈ $ 400.19)</span>
+                  </div>
+                </div>
+                <div class="card-footer mt-n1 py-0 border-0">
+                  <div class="d-flex align-items-center position-relative mb-1 py-3 border-top"><img class="me-2 rounded-circle" src="img/nft/catalog/avatars/08.png" width="32" alt="Avatar"><a class="nav-link-style fs-sm stretched-link" href="nft-vendor.html">@DistroKid</a></div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section> #}
+  {%  block script %}
+
+    <!-- Main theme script-->
+    <script src="{{asset('js/theme.min.js')}}"></script>
+
+
+      <script src="{{asset('vendor/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{asset('vendor/simplebar/dist/simplebar.min.js')}}"></script>
+   <script src="{{asset('vendor/tiny-slider/dist/min/tiny-slider.js')}}"></script>
+    <script src="{{asset('vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js')}}"></script>
+   <script src="{{asset('vendor/drift-zoom/dist/Drift.min.js')}}"></script>
+    <!-- Main theme script-->
+   
+
+  {% endblock %}
+      {% endblock %}

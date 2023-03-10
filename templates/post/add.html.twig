@@ -1,0 +1,157 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PostController!{% endblock %}
+
+{% block body %}
+<br><br><br><br>
+ <div class="bg-accent mb-4 py-4">
+        <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+          <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+                <li class="breadcrumb-item"><a class="text-nowrap" href="index.html"><i class="ci-home"></i>Home</a></li>
+                <li class="breadcrumb-item text-nowrap"><a href="home-nft.html">NFT Marketplace</a>
+                </li>
+                <li class="breadcrumb-item text-nowrap active" aria-current="page">Create New Item</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+            <h1 class="h3 text-light mb-0">Create New Item</h1>
+          </div>
+        </div>
+      </div>
+      <!-- Page content-->
+       {{form_start(form)}}
+      <section class="container mb-5 pt-3 pb-md-5 pb-1">
+        <div class="row gy-5">
+       
+          <div class="needs-validation col-md-12" novalidate>
+            <!-- Upload file-->
+            <div class="mb-md-5 mb-4 pb-md-0 pb-2">
+              <h2 class="h5 mb-2 pb-1">Upload file</h2>
+              <p class="mb-4 fs-sm">File types supported: PNG, JPG, GIF, WEBP, MP3 or MP4. Max size: 100mb.</p>
+              <!-- Drag and drop file upload-->
+              <div class="file-drop-area">
+                <div class="file-drop-icon ci-cloud-upload"></div><span class="file-drop-message">Drag and drop here to upload</span>
+                {{form_row(form.img)}}
+                <button class="file-drop-btn btn btn-outline-accent" type="button">Or select file</button>
+              </div>
+            </div>
+            <!-- Details-->
+            <div class="mb-md-5 mb-4 pb-md-0 pb-2">
+              <h2 class="h5 mb-3">Details</h2>
+              <div class="row gy-md-4 gy-3">
+                <div class="col-12">
+                  <label class="form-label" for="details-title">Title<span class="ms-1 text-danger">*</span></label>
+                 {{form_widget(form.title)}}
+                  <div class="invalid-feedback">Please, enter the title.</div><span class="form-text">Maximum 100 characters. No HTML or emoji allowed.</span>
+                </div>
+                <div class="col-sm-6">
+                  <label class="form-label" for="details-category">Category</label>
+                  {{form_widget(form.category)}}
+                </div>
+                <div class="col-sm-6">
+                
+                  <label class="form-label" for="details-collection">Add to collection</label>
+                
+
+                  <div class="input-group">
+                         {{form_widget(form.collect)}}
+                        <div class="dropdown" data-bs-toggle="select">
+                         <a href="{{path('add_collect')}}" class="form-control" >Add new Collection</a>
+                        </div>
+                      </div> </div>
+
+                </div>
+                <div class="col-12">
+                  <label class="form-label" for="details-description">Description</label>
+                  {{form_widget(form.description)}}
+               </div>
+              </div>
+            </div>
+            
+            <div>
+              <h2 class="h5 mb-4 pb-md-2">Price &amp; payment options</h2>
+              
+              <div class="mb-4" style="overflow-x: auto;">
+                <div class="nav nav-tabs d-inline-flex ms-n1 mb-0 border-0 flex-nowrap text-nowrap" role="tablist">
+                  <div class="btn btn-outline-accent active position-relative ms-1 me-2 mb-2" data-bs-target="#price-fix" data-bs-toggle="tab" role="tab"><i class="ci-lable me-2"></i>Fixed price
+                    <label class="position-absolute top-0 start-0 w-100 h-100" style="cursor: pointer;">
+                      <input class="visually-hidden" type="radio" name="price" checked>
+                    </label>
+                  </div>
+                  <div class="btn btn-outline-accent position-relative ms-1 me-2 mb-2" data-bs-target="#price-open" data-bs-toggle="tab" role="tab"><i class="ci-auction me-2"></i>Open for bids
+                    <label class="position-absolute top-0 start-0 w-100 h-100" style="cursor: pointer;">
+                      <input class="visually-hidden" type="radio" name="price">
+                    </label>
+                  </div>
+                 
+                </div>
+              </div>
+              <!-- Tabs content-->
+              <div class="tab-content">
+                <!-- Fixed price tab-->
+                <div class="tab-pane fade mb-4 pb-2 show active" id="price-fix" role="tabpanel">
+                  <div class="row gy-md-4 gy-3 mb-md-5 mb-4 pb-md-0 pb-2">
+                    <div class="col-sm-6">
+                      <label class="form-label" for="price-fix-value">Price</label>
+                      <div class="input-group">
+                        {{form_widget(form.price)}}
+                       
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="form-label" for="price-fix-payment">Preferred payment type</label>
+                      {{form_widget(form.currency)}}
+                    </div>
+                  
+                  </div>
+                 
+                </div>
+                <!-- Open for bids tab-->
+                <div class="tab-pane fade mb-4 pb-2" id="price-open" role="tabpanel">
+                  <div class="row gy-md-4 gy-3 mb-md-5 mb-4 pb-md-0 pb-2">
+                    <div class="col-12">
+                      <label class="form-label" for="price-open-min">Minimum bid</label>
+                      <div class="input-group">
+                        {{form_widget(form.minbet)}}
+                        <div class="dropdown" data-bs-toggle="select">
+                          {{form_widget(form.currencyv)}}
+                          <div class="dropdown-menu dropdown-menu-end w-100" style="min-width: auto;"><a class="dropdown-item" href="#"><span class="dropdown-item-label">ETH</span></a><a class="dropdown-item" href="#"><span class="dropdown-item-label">BNB</span></a><a class="dropdown-item" href="#"><span class="dropdown-item-label">BUSD</span></a></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="form-label" for="price-open-start">Starting date</label>
+                      <div class="input-group">
+                            {{form_widget(form.datedeb)}}
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="form-label" for="price-open-end">Expiration date</label>
+                      <div class="input-group">
+                       {{form_widget(form.datefin)}}
+                      </div>
+                    </div>
+                    
+                   
+                  </div>
+                  
+                </div>
+                <!-- Time auctions tab-->
+               
+              </div>
+              <!-- Submit-->
+              <div class="pt-2">
+                <button class="btn btn-lg btn-accent d-block w-100" type="submit">Create item</button>
+              </div>
+            </div>
+          </div>
+         
+          <!-- Preview-->
+        
+        </div>
+      </section>
+       {{form_end(form)}}
+{% endblock %}

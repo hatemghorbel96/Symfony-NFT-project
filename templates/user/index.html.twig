@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">visit</th>
+     
+    </tr>
+  </thead>
+  <tbody>
+  {% for u in users %}
+    <tr>
+      <th scope="row">{{u.email}}</th>
+      <td><a href="{{path('show_user',{'id':u.id})}}">profile</a></td>
+     
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

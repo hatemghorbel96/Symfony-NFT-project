@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}edit profile{% endblock %}
+
+{% block body %}
+<br><br><br><br>
+  <div class="page-title-overlap bg-accent pt-4">
+        <div class="container d-flex flex-wrap flex-sm-nowrap justify-content-center justify-content-sm-between align-items-center mb-2 pt-2">
+          <div class="d-flex align-items-center">
+            <div class="img-thumbnail rounded-circle position-relative flex-shrink-0" style="width: 6.375rem;">
+            <img class="rounded-circle" src="uploads/{{user.image}}" alt="@{{user.name}}_{{user.lastname}}"></div>
+            <div class="ps-3">
+              <h3 class="h5 mb-2 text-light">@{{user.name}}_{{user.lastname}}</h3><span class="d-block text-light fs-sm opacity-60">Joined July 2022</span>
+            </div>
+          </div>
+          <div class="my-sm-0 my-3 text-sm-end pt-1">
+            <div class="d-flex align-items-center text-nowrap fs-sm">
+              <div class="mb-2 me-sm-3 me-2 text-muted"><span class='fw-medium text-light'>{{user.posts | length}}</span> <span class='text-white opacity-70'>followers</span></div>
+              <div class="mb-2 ps-sm-3 ps-2 border-start border-light text-muted"><span class='fw-medium text-light'>{{user.collects | length}}</span> <span class='text-white opacity-70'>following</span></div>
+            </div><a class="text-light" href="#">{{user.userid}}<i class="ci-copy ms-2 fs-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="container mb-5 pb-3">
+        <div class="bg-light shadow-lg rounded-3 overflow-hidden">
+          <div class="row">
+            <!-- Sidebar-->
+            <aside class="col-lg-3 pe-xl-5">
+              <!-- Account menu toggler (hidden on screens larger 992px)-->
+              <div class="d-block d-lg-none p-4"><a class="btn btn-outline-accent d-block" href="#account-menu" data-bs-toggle="collapse"><i class="ci-menu me-2"></i>Account menu</a></div>
+              <!-- Actual menu-->
+              <div class="h-100 border-end mb-2">
+                <div class="d-lg-block collapse" id="account-menu">
+                  <ul class="list-unstyled mb-0">
+                    <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{path('editprofile')}}"><i class="ci-settings opacity-60 me-2"></i>Profile Settings</a></li>
+                    <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{path('showitem')}}"><i class="ci-image opacity-60 me-2"></i>My Items<span class="fs-sm text-muted ms-auto">{{user.posts | length}}</span></a></li>
+                    <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{path('showcollection')}}"><i class="ci-view-list opacity-60 me-2"></i>My Collections<span class="fs-sm text-muted ms-auto">{{user.collects | length}}</span></a></li>
+                    <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{path('app_logout')}}"><i class="ci-sign-out opacity-60 me-2"></i>Sign out</a></li>
+                  </ul>
+                </div>
+              </div>
+            </aside>
+            <!-- Content-->
+            
+              <section class="col-lg-9 pt-lg-4 pb-4 mb-3">
+              <div class="pt-2 px-4 ps-lg-0 pe-xl-5">
+                <h1 class="h3 mb-4 pb-2 text-sm-start text-center">My Collections</h1>
+                <!-- Collections grid-->
+                <div class="row row-cols-md-2 row-cols-1 g-4 mb-4 pb-3">
+                 
+                 
+                     {% for c in user.collects %}
+                  <div class="col">
+                    <article>
+                      <div class="card mb-3">
+                        <div class="card-body p-3">
+                          <div class="d-flex align-items-center justify-content-between mb-3">
+                            <!-- Author-->
+                            <div class="d-inline-flex align-items-center position-relative"><img class="rounded-circle me-2" src="/uploads/{{c.user.image}}" width="32" alt="Avatar">
+                              <div class="fs-sm">by<a class="ms-1 fw-medium text-accent stretched-link" href="{{path('show_user',{'id':c.user.id})}}">@{{c.user.name}}_{{c.user.lastname}}</a></div>
+                            </div>
+                            <!-- Delete button-->
+                            <button class="btn-wishlist btn-sm flex-shrink-0 ms-3" type="button" data-bs-toggle="tooltip" data-bs-placement="left" title="Remove"><i class="ci-trash"></i></button>
+                          </div>
+                          <!-- Collage-->
+                            <div class="row row-cols-2 g-2">
+                              {% for p in c.posts | slice(0,4) %}
+                              <div class="col">
+                                 <a href="{{path('post_show',{'id':p.id})}}">
+                                <div class="mt-n2"><img class="rounded-1 mt-2" src="/uploads/{{p.img}}" style="width:130px; height:130px;" alt="Collection item"></div>
+                                </a>
+                              </div>
+                               {% endfor %}
+                            </div>
+                        </div>
+                      </div>
+                      <!-- Collection title-->
+                      <h3 class="h5 mb-1"><a class="nav-link-style" href="{{path('show_collect',{'id':c.id})}}">{{c.name}}</a></h3><span class="fs-sm text-muted">
+                        {% set sum = 0 %}  
+                        
+                   
+                         {% for c in c.posts  %}
+                            {% if c.price %}
+                            {% set sum = sum + c.price %}
+                            {% else %}
+                             {% set sum = sum + c.minbet %}
+                             {% endif %}
+                              {% endfor %}
+                   
+                               ${{ sum / 100 }}
+                    </span>
+                    </article>
+                  </div>
+                    {% endfor %}
+                </div>
+                <p class="mb-4">Continue building your collections by placing bids on artworks.</p>
+                <div class="d-flex flex-sm-row flex-column"><a class="btn btn-accent" href="nft-catalog-v1.html">Explore marketplace<i class="ci-arrow-right ms-2"></i></a></div>
+              </div>
+            </section>
+         
+          </div>
+          </div>
+        </div>
+      </div>
+{% endblock %}

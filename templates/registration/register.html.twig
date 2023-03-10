@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+<br><br><br><br>
+
+ <div class="bg-accent pt-4 mb-5" style="padding-bottom: 35px;">
+        <div class="container pt-2 pb-3 pt-lg-3 pb-lg-4">
+          <div class="d-lg-flex justify-content-between pb-3">
+            <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+              <nav aria-label="breadcrumb">
+               
+              </nav>
+            </div>
+            <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+              <h1 class="h3 text-light mb-0">Register</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+   
+      <div class="container border-0" role="document">
+        <div class="modal-content">
+         
+          <div class="modal-body tab-content py-4">
+           
+            <div class="needs-validation tab-pane fade show active" autocomplete="off" novalidate id="signup-tab">
+              <div class="mb-3">
+               {{ form_start(registrationForm) }}
+                <label class="form-label" for="su-name">Name</label>
+                {{ form_widget(registrationForm.name) }}
+                <div class="invalid-feedback">Please fill in your name.</div>
+              </div>
+
+              <div class="mb-3">
+               
+                <label class="form-label" for="su-name">Last name</label>
+                {{ form_widget(registrationForm.lastname) }}
+                <div class="invalid-feedback">Please fill in your lastname.</div>
+              </div>
+
+
+              <div class="mb-3">
+                <label for="su-email">Email address</label>
+                {{ form_widget(registrationForm.email) }}
+                <div class="invalid-feedback">Please provide a valid email address.</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="su-password">Password</label>
+                <div class="password-toggle">
+                  {{ form_widget(registrationForm.plainPassword) }}
+                  <label class="password-toggle-btn" aria-label="Show/hide password">
+                    <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
+                  </label>
+                </div>
+              </div>
+             
+              <div class="mb-3">
+               
+                <label class="form-label" for="su-name"></label>
+                  {{ form_row(registrationForm.agreeTerms) }}
+               
+              </div>
+
+             
+
+
+              <button class="btn btn-primary btn-shadow d-block w-100" type="submit">Sign up</button>
+               {{ form_end(registrationForm) }}
+            </div>
+          </div>
+        </div>
+      </div>
+   
+
+{% endblock %}
